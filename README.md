@@ -1,0 +1,2 @@
+# ML & DL assisting functions
+Those are some functions that can be used to assist you while writting machine learning or deep learning code. Some of them are written to work with PyTorch but many others can work universally.
