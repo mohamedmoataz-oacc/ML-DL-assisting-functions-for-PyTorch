@@ -62,7 +62,7 @@ def test_step(model,
         average_loss /= len(dataloader)
     return {'Loss': float(loss), 'Accuracy': float(average_accuracy) * 100}
 
-def calculateConvLayersOutputPixels(input_shape, *layers_sequence):
+def calculateConvLayersOutputPixels(input_shape: torch.Size, *layers_sequence):
     """
     Returns the result of multiplying the output's height and width to be used as input for linear layers.
     """
@@ -79,4 +79,4 @@ def calculateConvLayersOutputPixels(input_shape, *layers_sequence):
                     (input_shape[-1] + 2* layers[layer].padding - layers[layer].dilation * (layers[layer].kernel_size - 1) - 1) / layers[layer].stride + 1
                 ]
 
-    return int(input_shape[0] * input_shape[1])
+    return int(input_shape[0]) * int(input_shape[1])
