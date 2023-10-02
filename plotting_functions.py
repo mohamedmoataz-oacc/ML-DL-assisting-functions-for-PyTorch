@@ -40,7 +40,7 @@ def visualize_truth_vs_predicted_image_labels(model, image_data: torch.utils.dat
     for i in to_visualize:
         axs[c].imshow(image_data[i][0].permute(1,2,0))
         predicted_num = torch.argmax(model(image_data[i][0].unsqueeze(0).type(torch.float32).to(model_device)), dim=1)
-        title = f"Truth: {classes[image_data.targets[i]]} | Predicted: {classes[predicted_num]}"
+        title = f"Truth: {classes[image_data.targets[i]]}\nPredicted: {classes[predicted_num]}"
         axs[c].set_title(title, c = 'g' if classes[image_data.targets[i]] == classes[predicted_num] else 'r', fontsize=10)
         axs[c].axis(False)
         c+=1
