@@ -7,7 +7,7 @@ def train_step(model, dataloader: torch.utils.data.DataLoader,
                optimizer,
                loss_fn,
                acc_fn: torchmetrics.Accuracy,
-               device = 'cpu') -> Dict[str: float]:
+               device = 'cpu'):
     """
     Trains the model for 1 epoch.
     Returns a dictionary containing the loss and accuracy values.
