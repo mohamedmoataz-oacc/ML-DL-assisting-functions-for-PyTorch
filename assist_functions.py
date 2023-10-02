@@ -1,7 +1,6 @@
 import torch
 from torch import nn
 import torchmetrics
-from typing import Dict
 
 def train_step(model, dataloader: torch.utils.data.DataLoader,
                optimizer,
@@ -61,3 +60,22 @@ def test_step(model,
     average_accuracy /= len(dataloader)
     average_loss /= len(dataloader)
     return {'Loss': float(loss), 'Accuracy': float(average_accuracy) * 100}
+
+def calculateConvLayersOutputPixels(input_shape, *layers_sequence):
+    """
+    Returns the result of multiplying the output's height and width to be used as input for linear layers.
+    """
+    for layers in layers_sequence:
+        for layer in range(len(layers)):
+            if isinstance(layers[layer], nn.Conv2d):
+                input_shape = [
+                    (input_shape[-2] + 2* layers[layer].padding[0] - layers[layer].dilation[0] * (layers[layer].kernel_size[0] - 1) - 1) / layers[layer].stride[0] + 1,
+                    (input_shape[-1] + 2* layers[layer].padding[1] - layers[layer].dilation[1] * (layers[layer].kernel_size[1] - 1) - 1) / layers[layer].stride[1] + 1
+                ]
+            elif isinstance(layers[layer], nn.MaxPool2d):
+                input_shape = [
+                    (input_shape[-2] + 2* layers[layer].padding - layers[layer].dilation * (layers[layer].kernel_size - 1) - 1) / layers[layer].stride + 1,
+                    (input_shape[-1] + 2* layers[layer].padding - layers[layer].dilation * (layers[layer].kernel_size - 1) - 1) / layers[layer].stride + 1
+                ]
+
+    return int(input_shape[0] * input_shape[1])
